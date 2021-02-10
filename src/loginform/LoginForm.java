@@ -6,11 +6,18 @@
 package loginform;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -29,6 +36,9 @@ public class LoginForm extends Application {
     private String loginTitle = "Welcome Please Login";
     private String fontStyle = "Comic Sans MS"; 
     
+    private int titleFontSize = 26; 
+    private int normalFontSize = 18; 
+    
     @Override
     public void start(Stage primaryStage) {
         
@@ -39,14 +49,52 @@ public class LoginForm extends Application {
         root.setPadding(new Insets(25, 25, 25, 25)); 
         
         Text sceneTitle = new Text(loginTitle); 
-        sceneTitle.setFont(Font.font(fontStyle, FontWeight.BOLD, 26));
-        root.add(sceneTitle, 0, 0);
+        sceneTitle.setFont(Font.font(fontStyle, FontWeight.BOLD, titleFontSize));
+        root.add(sceneTitle, 0, 0, 2, 1);
         
         Label userNameLabel = new Label("Username: "); 
-        userNameLabel.setFont(Font.font(fontStyle, FontWeight.NORMAL, 18)); 
+        userNameLabel.setFont(Font.font(fontStyle, FontWeight.NORMAL, normalFontSize)); 
         root.add(userNameLabel, 0, 1); 
         
+        TextField userNameTextField = new TextField(); 
+        root.add(userNameTextField, 1, 1);
         
+        Label passwordLabel = new Label("Password: "); 
+        passwordLabel.setFont(Font.font(fontStyle, FontWeight.NORMAL, normalFontSize));
+        root.add(passwordLabel, 0, 2); 
+        
+        PasswordField passwordField = new PasswordField(); 
+        root.add(passwordField, 1, 2);
+        
+//        root.setGridLinesVisible(true);
+        
+        Button loginButton = new Button("Sign In"); 
+        HBox hboxForButton = new HBox(10); 
+        hboxForButton.setAlignment(Pos.BOTTOM_RIGHT); 
+        hboxForButton.getChildren().add(loginButton);
+        root.add(hboxForButton, 1, 4);
+        
+        Text actionTarget = new Text(); 
+        GridPane.setColumnIndex(actionTarget, 1);
+        GridPane.setRowIndex(actionTarget, 6);
+        root.getChildren().add(actionTarget); 
+        
+        loginButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e){
+                
+                if(userNameTextField.getText().length() > 5 && passwordField.getText().length() > 5){
+                    actionTarget.setFill(Color.FIREBRICK);
+                    actionTarget.setText("Sign In Button Pressed");
+                
+                    System.out.println("username: " + userNameTextField.getText());
+                    System.out.println("password: " + passwordField.getText());
+                }
+                else {
+                    System.out.println("ERROR: Username or Password must be 5 characters");
+                }   
+            }
+        });
         
         Scene scene = new Scene(root, width, height); 
         
@@ -55,6 +103,11 @@ public class LoginForm extends Application {
         primaryStage.show();
         
     }
+    
+//    public boolean checkInputs(Node node, Node node){
+//        if(correct)
+//        return boolean; 
+//    }
 
     /**
      * @param args the command line arguments
